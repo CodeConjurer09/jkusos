@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>Upcoming JKUSOS Events</h2>
+
+    {% for event in events %}
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px">
+      {% if event.banner %}
+      <img
+        src="{{ event.banner.url }}"
+        alt="{{ event.title }}"
+        style="max-width: 100%"
+      />
+      {% endif %}
+      <h3>{{ event.title }}</h3>
+      <p><strong>Type:</strong> {{ event.get_type_display }}</p>
+      <p><strong>Date:</strong> {{ event.date|date:"D, M d, Y - H:i" }}</p>
+      <p>{{ event.description }}</p>
+
+      {% if event.registration_required %}
+      <a href="{% url 'event_detail' event.id %}">Register</a>
+      {% else %}
+      <p><em>No registration needed for this event.</em></p>
+      {% endif %}
+    </div>
+    {% empty %}
+    <p>No upcoming events at the moment.</p>
+    {% endfor %}
+  </body>
+</html>

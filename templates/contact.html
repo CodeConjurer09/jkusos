@@ -1,0 +1,70 @@
+{% extends "home_base.html" %}
+{% load static %}
+
+{% block title %}Contact Us - JKUSOS{% endblock %}
+
+{% block extra_head %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/contact.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">📞 Contact JKUSOS</h2>
+    <p class="text-muted">Reach out to us with any questions or concerns.</p>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show mt-3" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <div class="row g-4">
+    <!-- Contact Info Card -->
+    <div class="col-md-5">
+      <div class="card shadow contact-card transform-on-hover">
+        <div class="card-body">
+          <h5 class="mb-3"><i class="bi bi-geo-alt-fill me-2"></i>Our Information</h5>
+          {% if contact_info %}
+            <p><strong>Email:</strong> <a href="mailto:{{ contact_info.email }}">{{ contact_info.email }}</a></p>
+            <p><strong>Customer Care:</strong> <a href="tel:{{ contact_info.phone }}">{{ contact_info.phone }}</a></p>
+            <p><strong>Website:</strong> <a href="{{ contact_info.website }}" target="_blank">{{ contact_info.website }}</a></p>
+          {% else %}
+            <p class="text-danger">⚠ Contact information is not yet available.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="col-md-7">
+      <div class="card shadow contact-card transform-on-hover">
+        <div class="card-body">
+          <h5 class="mb-3"><i class="bi bi-chat-dots me-2"></i>Ask a Question / Raise a Concern</h5>
+          <form method="post" action="">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="name" class="form-label">Your Name</label>
+              <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Your Email</label>
+              <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="message" class="form-label">Your Message</label>
+              <textarea id="message" name="message" rows="4" class="form-control" required placeholder="Type your message..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

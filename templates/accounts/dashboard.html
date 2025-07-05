@@ -1,0 +1,252 @@
+{% extends "home_base.html" %}
+{% load static %}
+
+{% block title %}JKUSOS | Dashboard{% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="dashboard-section py-5 bg-light">
+  <div class="container">
+    <h2 class="mb-5 text-center">Welcome, {{ user.first_name|default:user.first_name }}</h2>
+    <div class="row g-4 mb-4">
+
+      <!-- Account Status Card -->
+      <div class="col-md-4">
+        <div class="card dashboard-card shadow-sm p-3 h-100 tap-expand" id="statusCard">
+          <h6><i class="bi bi-person-check me-2"></i>Account Status</h6>
+
+          {% if not user.is_member %}
+            <p class="status-badge glow-danger text-white">Inactive</p>
+          {% else %}
+            <p class="status-badge bg-success text-white">Active</p>
+          {% endif %}
+
+          <small class="text-muted">Tap me</small>
+          <div class="card-details d-none">
+
+            {% with user.membershippayment_set.last as payment %}
+              {% if payment %}
+                {% if payment.status == payment.STATUS_PENDING %}
+                  <p>Latest Payment: <strong>Pending</strong></p>
+                {% elif payment.status == payment.STATUS_DECLINED %}
+                  <p class="text-danger">Latest payment was declined. Please submit again.</p>
+                {% elif not user.is_member %}
+                  <p class="text-warning">Latest payment approved, but total is less than KES 300.</p>
+                {% endif %}
+              {% else %}
+                <p>No payment submitted yet.</p>
+              {% endif %}
+            {% endwith %}
+
+            <p>Total Approved: <strong>KES {{ total_approved_amount }}</strong></p>
+
+            {% if user.is_member %}
+              <p class="text-success">You are a registered member of JKUSOS.</p>
+              <button id="triggerTransactionsPopup" class="btn btn-outline-info btn-sm mt-2">View Transactions</button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Membership Card -->
+      <div class="col-md-4">
+        <div class="card dashboard-card shadow-sm p-3 h-100 tap-expand" id="membershipCard">
+          <h6><i class="bi bi-credit-card me-2"></i>Membership</h6>
+          <p>Pay for Membership</p>
+          <small class="text-muted">Tap to proceed</small>
+          <div class="card-details">
+
+            <!-- Payment messages -->
+            {% if messages %}
+              {% for message in messages %}
+                {% if 'payment' in message.tags %}
+                  <div class="alert alert-{{ message.level_tag }} py-1 px-2 small" role="alert">{{ message }}</div>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+
+            <button id="triggerPaymentPopup" class="btn btn-success btn-sm mt-2">Pay Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ask Question Card -->
+      <div class="col-md-4">
+        <div class="card dashboard-card shadow-sm p-3 h-100 tap-expand" id="askCard">
+          <h6><i class="bi bi-chat-left-text me-2"></i>Ask a Question</h6>
+          <p>Need clarification or have a concern?</p>
+          <small class="text-muted">Tap to ask</small>
+
+          <div class="card-details d-none" style="position: relative;">
+            <p class="mb-2"><strong>Your Email:</strong> {{ user.email }}</p>
+
+            <!-- Question messages -->
+            {% if messages %}
+              {% for message in messages %}
+                {% if 'question' in message.tags %}
+                  <div class="alert alert-{{ message.level_tag }} py-1 px-2 small" role="alert">{{ message }}</div>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+
+            <!-- QUESTION FORM (Separate from popup) -->
+            <form method="post" action="#" class="no-toggle d-flex align-items-start gap-2">
+              {% csrf_token %}
+              <div style="flex-grow:1;">
+                <label class="form-label small">Your Question</label>
+                <textarea class="form-control" name="question" placeholder="Type your question here..." rows="3" required></textarea>
+              </div>
+
+              <div class="d-flex flex-column align-items-center gap-1">
+                <button type="submit" class="btn btn-outline-secondary btn-sm">Send</button>
+                <button id="triggerQuestionsPopup" type="button" class="btn btn-outline-info btn-sm" title="View My Questions">View</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Past Events Card -->
+      <div class="col-md-4 mb-4">
+        <div class="card dashboard-card shadow-sm p-3 h-100 tap-expand" id="pastEventsCard">
+          <h6 class="card-title bg-primary text-white rounded px-2 py-1"><i class="bi bi-clock-history me-2"></i>Past Events</h6>
+          <p>Missed an event? Catch up here.</p>
+          <small class="text-muted">Tap to view</small>
+          <div class="card-details d-none">
+            <a href="{% url 'past_events' %}" class="btn btn-outline-info btn-sm mt-2">View Past Events</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<div class="card shadow-sm p-4 animate-slide-up">
+  <h5 class="mb-3"><i class="bi bi-calendar-event me-2"></i>Upcoming Events</h5>
+  {% for event in upcoming_events %}
+    <div class="event-box mb-4 d-flex flex-column flex-md-row align-items-start" style="width: 100%;">
+      {% if event.banner %}
+        <img src="{{ event.banner.url }}" alt="{{ event.title }}"
+             class="img-thumbnail mb-3 mb-md-0 me-md-3"
+             style="width: 180px; height: 120px; object-fit: cover; flex-shrink: 0;">
+      {% endif %}
+      <div class="flex-grow-1">
+        <h6>{{ event.title }}</h6>
+        <p class="mb-1 text-muted">{{ event.date|date:"M d, Y" }} • {{ event.location }}</p>
+        <p style="white-space: pre-wrap;">{{ event.description }}</p>
+
+        {% if event.registration_required %}
+          {% if event.type in allowed_booking_types %}
+            <a href="{% url 'event_booking' event.id %}" class="btn btn-primary btn-sm">Book</a>
+          {% else %}
+            <span class="badge bg-info text-white">Registration Required</span>
+          {% endif %}
+        {% else %}
+          <span class="badge bg-secondary">No Registration Needed</span>
+        {% endif %}
+      </div>
+    </div>
+  {% empty %}
+    <p>No upcoming events at the moment.</p>
+  {% endfor %}
+</div>
+
+
+<!-- Transactions Popup -->
+<div class="payment-popup shadow-lg p-4 bg-white rounded" id="transactionsPopup">
+  <button id="closeTransactionsPopup" class="close-btn">&times;</button>
+  <h6 class="text-primary">Your Transactions</h6>
+  {% if user.membershippayment_set.exists %}
+    <ul class="list-group small">
+      {% for p in user.membershippayment_set.all %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>{{ p.submitted_at|date:"M d, Y" }} - {{ p.transaction_code }}</span>
+          <span class="badge 
+            {% if p.status == p.STATUS_APPROVED %}bg-success
+            {% elif p.status == p.STATUS_DECLINED %}bg-danger
+            {% else %}bg-warning text-dark
+            {% endif %}">
+            {{ p.get_status_display }}
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-muted">No transactions available.</p>
+  {% endif %}
+</div>
+
+<!-- Payment Popup -->
+<div class="payment-popup shadow-lg p-4 bg-white rounded" id="membershipPopup">
+  <button id="closePaymentPopup" class="close-btn">&times;</button>
+  <h6 class="text-primary">How to Pay</h6>
+  {% if payment_settings %}
+    <ol class="small">
+      <li>Go to M-PESA</li>
+      <li>Select "Lipa na M-PESA"</li>
+      <li>Choose Paybill: <strong>{{ payment_settings.paybill_number }}</strong></li>
+      <li>Account name: <strong>{{ payment_settings.account_name }}</strong></li>
+      <li>Amount: <strong>KES 300</strong></li>
+      <li>Enter PIN</li>
+    </ol>
+  {% else %}
+    <p class="text-danger">⚠ Payment settings not configured by admin.</p>
+  {% endif %}
+
+  <form method="post" action="#">
+    {% csrf_token %}
+
+    <!-- Payment messages -->
+    {% if messages %}
+      {% for message in messages %}
+        {% if 'payment' in message.tags %}
+          <div class="alert alert-{{ message.level_tag }} py-1 px-2 small" role="alert">{{ message }}</div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    <div class="mb-2">
+      <label class="form-label">Amount</label>
+      <input type="number" class="form-control" name="amount" required>
+    </div>
+    <div class="mb-2">
+      <label class="form-label">Transaction Code</label>
+      <input type="text" class="form-control" name="transaction_code" required>
+    </div>
+    <button type="submit" class="btn btn-success btn-sm mt-2">Submit</button>
+  </form>
+</div>
+
+<!-- Questions Popup moved outside, similar style -->
+<div class="payment-popup shadow-lg p-4 bg-white rounded" id="questionsPopup" style="max-width: 450px;">
+  <button id="closeQuestionsPopup" class="close-btn">&times;</button>
+  <h6 class="text-primary mb-3">My Questions & Replies</h6>
+
+  {% if user_questions %}
+    <ul class="list-group small">
+      {% for q in user_questions %}
+        <li class="list-group-item">
+          <p><strong>Q:</strong> {{ q.question }}</p>
+
+          {% if q.reply %}
+            <p class="mb-1"><strong>Admin:</strong> {{ q.reply }}</p>
+          {% else %}
+            <p class="mb-1 text-muted"><em>No reply yet</em></p>
+          {% endif %}
+
+          <small class="text-muted">{{ q.submitted_at|date:"M d, Y H:i" }}</small>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-muted">You haven't asked any questions yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

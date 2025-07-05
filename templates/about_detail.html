@@ -1,0 +1,35 @@
+{% extends "home_base.html" %}
+{% load static %}
+
+{% block title %}JKUSOS | Home{% endblock %}
+
+{% block content %}
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="shadow bg-white rounded p-5">
+      <h2 class="mb-4 text-center">More About JKUSOS</h2>
+
+      <p><strong>JKUSOS</strong> is more than just a club — it's a launchpad for personal and academic growth. We believe in giving every student the opportunity to lead, learn, and make meaningful contributions to society through data and innovation.</p>
+
+      <h4 class="mt-4">Registration Fee</h4>
+      <p>The current registration fee for new members is <strong>KES 300</strong>. This fee helps support club activities, materials, and administrative costs.</p>
+
+      <h4 class="mt-4">What You Get as a Member</h4>
+      <ul>
+        <li>Access to exclusive data science and statistics workshops</li>
+        <li>Certificate-backed projects and research opportunities</li>
+        <li>Networking sessions with alumni and industry professionals</li>
+        <li>Participation in field trips, conferences, and outreach</li>
+      </ul>
+
+      <h4 class="mt-4">Join Us</h4>
+      <p>Membership is open to all students, regardless of course. Whether you're pursuing statistics, data science, engineering, or just curious about data — you're welcome to join us.</p>
+
+      <div class="text-center mt-5">
+        <a href="{% url 'register' %}" class="btn btn-success px-4 py-2">Register Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

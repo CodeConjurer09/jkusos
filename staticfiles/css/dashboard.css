@@ -1,0 +1,179 @@
+/* Shared badge style */
+.status-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  font-weight: 600;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  width: fit-content;
+  margin-top: 8px;
+}
+
+/* Glowing red badge */
+.glow-danger {
+  background-color: #dc3545;
+  color: #fff;
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.8), 0 0 15px rgba(255, 0, 0, 0.6);
+  animation: glowPulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  from {
+    box-shadow: 0 0 6px rgba(255, 0, 0, 0.6);
+  }
+  to {
+    box-shadow: 0 0 16px rgba(255, 0, 0, 1);
+  }
+}
+
+@keyframes bubble {
+  0%, 100% { box-shadow: 0 0 10px rgba(255,0,0,0.8); }
+  50% { box-shadow: 0 0 20px rgba(255,0,0,1); }
+}
+@keyframes bubble-green {
+  0%, 100% { box-shadow: 0 0 10px rgba(0,200,0,0.8); }
+  50% { box-shadow: 0 0 20px rgba(0,255,0,1); }
+}
+.animate-bubble {
+  animation: bubble 1.5s infinite ease-in-out;
+}
+.animate-bubble-green {
+  animation: bubble-green 1.5s infinite ease-in-out;
+}
+
+/* Expandable cards */
+.dashboard-card {
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+.dashboard-card.collapsed .card-details {
+  max-height: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+}
+.dashboard-card.expanded .card-details {
+  max-height: 500px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.tap-prompt {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+/* Generic popup style (shared for payment, transactions, questions) */
+.payment-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  padding: 2rem;
+  z-index: 9999;
+  display: none;
+  width: 90%;
+  max-width: 500px;
+  transition: all 0.3s ease;
+}
+.payment-popup.active {
+  display: block;
+  animation: fadeIn 0.3s ease forwards;
+}
+.payment-popup .close-btn {
+  float: right;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -60%) scale(0.9); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Reuse popup for questions */
+#questionsPopup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  padding: 2rem;
+  z-index: 9999;
+  display: none;
+  width: 90%;
+  max-width: 500px;
+  transition: all 0.3s ease;
+}
+#questionsPopup.active {
+  display: block;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* Close button reuse */
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
+  color: #999;
+}
+
+/* UPCOMING EVENTS - Responsive Fix */
+.event-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.event-box img.img-thumbnail {
+  width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 0.25rem;
+}
+
+.event-box .flex-grow-1 {
+  width: 100%;
+}
+
+.event-box .badge {
+  display: inline-block;
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 100%;
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .event-box {
+    flex-direction: row;
+    text-align: left;
+    align-items: flex-start;
+  }
+  .event-box img.img-thumbnail {
+    width: 180px;
+    height: 120px;
+    flex-shrink: 0;
+    margin-right: 1rem;
+  }
+  .event-box .flex-grow-1 {
+    flex-grow: 1;
+  }
+}

@@ -1,0 +1,144 @@
+{% extends "home_base.html" %}
+{% load static %}
+
+{% block title %}JKUSOS | Home{% endblock %}
+
+{% block content %}
+
+<!-- Hero Carousel -->
+<section class="hero-carousel">
+  <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+    <div class="carousel-inner">
+
+      <!-- Slide 1 -->
+      <div class="carousel-item active">
+        <img src="{% static 'images/image1.webp' %}" class="d-block w-100 hero-img" alt="Slide 1">
+        <div class="carousel-caption">
+          <div>
+            <h2>Welcome to Jomo Kenyatta University Association Of Statisticians.</h2>
+            <p>Join our club. Learn. Exprole. Create friends. Win together🎉</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="carousel-item">
+        <img src="{% static 'images/image2.jpg' %}" class="d-block w-100 hero-img" alt="Slide 2">
+        <div class="carousel-caption">
+          <div>
+            <h2>Empowering Statistical Students</h2>
+            <p>Get mentored and grow your statistical skills in JKUSOS.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="carousel-item">
+        <img src="{% static 'images/image3.JPG' %}" class="d-block w-100 hero-img" alt="Slide 3">
+        <div class="carousel-caption">
+          <div>
+            <h2>Community Outreach</h2>
+            <p>Engage in statistical projects, events and exprolation.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Carousel Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="about-section py-5">
+  <div class="container d-flex justify-content-center">
+    <div class="about-card shadow-lg p-5 bg-white rounded animate-slide-up">
+      <h2 class="text-center mb-4">About JKUSOS – JKUAT Statistical Club</h2>
+      <p class="text-center">
+        Welcome to <strong>JKUSOS</strong> – the official Statistical Club of JKUAT!
+      </p>
+      <p>
+        We are a dynamic and vibrant community of students passionate about data, analytics, and the power of statistics to shape the world. Our mission is to bridge the gap between classroom learning and real-world application through academic trips, hands-on workshops, research projects, and networking opportunities.
+      </p>
+      <ul>
+        <li>Enhance statistical knowledge and practical skills</li>
+        <li>Connect students with industry professionals</li>
+        <li>Promote research, innovation, and teamwork</li>
+        <li>Organize engaging events that are both educational and fun</li>
+      </ul>
+      <p>
+        Whether you're a statistics major or simply curious about data, <strong>JKUSOS</strong> is the place to grow, connect, and thrive. Join us as we turn numbers into knowledge and ideas into action!
+      </p>
+      <div class="text-center mt-4">
+        <a href="{% url 'read_more' %}" class="btn btn-primary px-4 py-2 shadow">Read More</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mission, Vision, Values Section -->
+<section class="mv-section py-5">
+  <div class="container d-flex justify-content-center">
+    <div class="row g-4 w-100 justify-content-center animate-slide-up">
+
+      <!-- Mission Card -->
+      <div class="col-md-4">
+        <div class="mv-card shadow-lg p-4 bg-white rounded h-100 text-center">
+          <h5 class="mb-3 text-primary">🎯 Our Mission</h5>
+          <p>To empower members with skills, opportunities, and a supportive environment to grow and lead within and beyond campus.</p>
+        </div>
+      </div>
+
+      <!-- Vision Card -->
+      <div class="col-md-4">
+        <div class="mv-card shadow-lg p-4 bg-white rounded h-100 text-center">
+          <h5 class="mb-3 text-primary">👁️ Our Vision</h5>
+          <p>To be the most inclusive, impactful, and inspiring club that fosters collaboration and real-world experience.</p>
+        </div>
+      </div>
+
+      <!-- Values Card -->
+      <div class="col-md-4">
+        <div class="mv-card shadow-lg p-4 bg-white rounded h-100 text-center">
+          <h5 class="mb-3 text-primary">🤝 Our Values</h5>
+          <ul class="list-unstyled">
+            <li>Integrity</li>
+            <li>Innovation</li>
+            <li>Inclusiveness</li>
+            <li>Teamwork</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Club Photo Gallery Section -->
+<section id="gallery" class="bg-light py-5">
+  <div class="container">
+    <h2 class="text-center mb-5">Moments at JKUSOS</h2>
+
+    <div class="photo-grid">
+      <img src="{% static 'images/event4.jpg' %}" alt="Club Event 1">
+      <img src="{% static 'images/event5.jpg' %}" alt="Club Event 2">
+      <img src="{% static 'images/event4.webp' %}" alt="Club Event 3">
+      <img src="{% static 'images/photo4.jpg' %}" alt="Club Event 4">
+      <img src="{% static 'images/photo5.jpg' %}" alt="Club Event 5">
+      <img src="{% static 'images/event1.jpg' %}" alt="Club Event 6">
+      <img src="{% static 'images/event2.jpg' %}" alt="Club Event 7">
+      <img src="{% static 'images/photo8.jpg' %}" alt="Club Event 8">
+      <img src="{% static 'images/event3.jpg' %}" alt="Club Event 9">
+      <img src="{% static 'images/photo10.jpg' %}" alt="Club Event 10">
+    </div>
+  </div>
+</section>
+{% endblock %}

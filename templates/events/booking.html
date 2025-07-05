@@ -1,0 +1,140 @@
+{% extends "home_base.html" %}
+{% load static %}
+
+{% block title %}Book Event - {{ event.title }}{% endblock %}
+
+{% block extra_head %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/booking.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4">Book Event: {{ event.title }}</h2>
+
+  <div class="card p-4 shadow-sm mb-4">
+    <h5>Event Details</h5>
+    <p><strong>Date:</strong> {{ event.date|date:"M d, Y H:i" }}</p>
+    <p><strong>Location:</strong> {{ event.location }}</p>
+    <p>{{ event.description }}</p>
+    {% if event.banner %}
+      <img src="{{ event.banner.url }}" alt="{{ event.title }}" style="max-width: 400px; object-fit: cover;">
+    {% endif %}
+  </div>
+
+  {% if approved_booking %}
+    <div class="alert alert-info">
+      You have already booked this event.<br>
+      <strong>Payment status:</strong> {{ approved_booking.get_payment_status_display }}
+    </div>
+  {% else %}
+    {% if latest_booking %}
+      <div class="alert alert-info d-flex justify-content-between align-items-center">
+        <div>
+          You have a booking with status: <strong>{{ latest_booking.get_payment_status_display }}</strong>
+        </div>
+        <button id="showBookingDetails" class="btn btn-sm btn-outline-primary">View My Booking</button>
+      </div>
+
+      <!-- Booking Details Popup -->
+      <div id="bookingDetailsPopup" class="payment-popup hidden" tabindex="-1" aria-hidden="true">
+        <div class="payment-popup-content position-relative">
+          <button id="closeBookingDetails" class="close-btn btn btn-sm btn-danger" style="position:absolute; top:10px; right:10px;">&times;</button>
+          <h5 class="text-primary mb-3">Booking Details</h5>
+          <p><strong>Status:</strong> {{ latest_booking.get_payment_status_display }}</p>
+          <p><strong>Amount:</strong> KES {{ latest_booking.amount }}</p>
+          <p><strong>Transaction Code:</strong> {{ latest_booking.transaction_code }}</p>
+
+          {% if latest_booking.payment_status == 'declined' %}
+            <hr>
+            <p class="text-danger">Your previous payment was declined. Please re-submit payment:</p>
+            <form method="post">
+              {% csrf_token %}
+              <div class="mb-2">
+                <label class="form-label">Amount</label>
+                <input type="number" name="amount" class="form-control" required value="{{ event.price }}">
+              </div>
+              <div class="mb-2">
+                <label class="form-label">Transaction Code</label>
+                <input type="text" name="transaction_code" class="form-control" required>
+              </div>
+              <button type="submit" class="btn btn-success btn-sm mt-2">Submit Payment Again</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Also show payment popup trigger for new payment if declined -->
+      {% if latest_booking.payment_status == 'declined' %}
+        <button id="openPaymentPopup" class="btn btn-success mt-3">Make a New Payment</button>
+      {% endif %}
+    {% else %}
+      <!-- No bookings at all, show payment form directly -->
+      {% if event.payment_required %}
+        <p>This event requires payment of <strong>KES {{ event.price }}</strong>.</p>
+
+        <button id="openPaymentPopup" class="btn btn-success mb-3">Proceed to Payment</button>
+      {% else %}
+        <p>This event does not require payment. You are now booked.</p>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+
+  <!-- Payment Popup -->
+  <div id="paymentPopup" class="payment-popup hidden" tabindex="-1" aria-hidden="true">
+    <div class="payment-popup-content position-relative">
+      <button id="closePaymentPopup" class="close-btn btn btn-sm btn-danger" style="position:absolute; top:10px; right:10px;">&times;</button>
+      <h5 class="text-primary mb-3">How to Pay</h5>
+
+      {% if payment_settings %}
+        <ol class="small">
+          <li>Go to M-PESA</li>
+          <li>Select <strong>"Lipa na M-PESA"</strong></li>
+          <li>Enter Paybill: <strong>{{ payment_settings.paybill_number }}</strong></li>
+          <li>Account Name: <strong>{{ payment_settings.account_name }}</strong></li>
+          <li>Amount: <strong>KES {{ event.price }}</strong></li>
+          <li>Enter PIN and confirm</li>
+        </ol>
+      {% else %}
+        <p class="text-danger">⚠ Payment settings not configured by admin.</p>
+      {% endif %}
+
+      <hr class="my-3">
+
+      <form method="post">
+        {% csrf_token %}
+
+        {% if messages %}
+          {% for message in messages %}
+            {% if 'payment' in message.tags %}
+              <div class="alert alert-{{ message.level_tag }} py-1 px-2 small" role="alert">{{ message }}</div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
+        <div class="mb-3">
+          <label class="form-label">Amount</label>
+          <input type="number" name="amount" class="form-control" required value="{{ event.price }}">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Transaction Code</label>
+          <input type="text" name="transaction_code" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-sm">Submit Payment</button>
+      </form>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.level_tag }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+  <script src="{% static 'js/booking.js' %}"></script>
+{% endblock %}

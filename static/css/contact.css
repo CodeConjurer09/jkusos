@@ -1,0 +1,50 @@
+.contact-card {
+  border-radius: 1rem;
+  background: #ffffff;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  padding: 1.5rem;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+}
+
+.contact-card h5 {
+  font-weight: 600;
+  color: #1B263B;
+}
+
+.contact-card a {
+  text-decoration: none;
+  color: #6A0DAD;
+}
+
+.contact-card a:hover {
+  text-decoration: underline;
+}
+
+form label {
+  font-weight: 500;
+  color: #1B263B;
+}
+
+form input, form textarea {
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+}
+
+form textarea::placeholder {
+  color: #999;
+}
+
+.btn-primary {
+  background-color: #6A0DAD;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #5500a3;
+}
