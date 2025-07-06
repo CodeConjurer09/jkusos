@@ -30,16 +30,33 @@
       <div class="card shadow contact-card transform-on-hover">
         <div class="card-body">
           <h5 class="mb-3"><i class="bi bi-geo-alt-fill me-2"></i>Our Information</h5>
+          
           {% if contact_info %}
             <p><strong>Email:</strong> <a href="mailto:{{ contact_info.email }}">{{ contact_info.email }}</a></p>
             <p><strong>Customer Care:</strong> <a href="tel:{{ contact_info.phone }}">{{ contact_info.phone }}</a></p>
             <p><strong>Website:</strong> <a href="{{ contact_info.website }}" target="_blank">{{ contact_info.website }}</a></p>
+            
+            {% if contact_info.instagram %}
+              <p>
+                <strong><i class="bi bi-instagram me-1 text-danger"></i>Instagram:</strong>
+                <a href="{{ contact_info.instagram }}" target="_blank">@jkusos</a>
+              </p>
+            {% endif %}
+            
+            {% if contact_info.whatsapp_group %}
+              <p>
+                <strong><i class="bi bi-whatsapp me-1 text-success"></i>WhatsApp Group:</strong>
+                <a href="{{ contact_info.whatsapp_group }}" target="_blank">Join Here</a>
+              </p>
+            {% endif %}
+          
           {% else %}
             <p class="text-danger">⚠ Contact information is not yet available.</p>
           {% endif %}
         </div>
       </div>
     </div>
+
 
     <!-- Contact Form -->
     <div class="col-md-7">

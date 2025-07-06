@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User, MembershipPayment, PaymentSettings, UserQuestion, ContactSettings, ContactMessage
 
 class UserAdmin(BaseUserAdmin):
-    list_display = ('email', 'first_name', 'last_name', 'reg_number', 'is_member', 'is_staff')
+    list_display = ('email', 'first_name', 'last_name', 'reg_number', 'is_member', 'is_staff','is_active')
     list_filter = ('is_member', 'is_staff', 'is_superuser')
     search_fields = ('email', 'reg_number', 'first_name', 'last_name')
     ordering = ('email',)
@@ -36,14 +36,17 @@ class MembershipPaymentAdmin(admin.ModelAdmin):
 
     def approve_selected(self, request, queryset):
         updated = 0
+        approved_now = []
+
         for payment in queryset:
             if payment.status != MembershipPayment.STATUS_APPROVED:
                 payment.status = MembershipPayment.STATUS_APPROVED
                 payment.save()
+                approved_now.append(payment)
                 updated += 1
 
         # After approving, re-check total approved amount for each user
-        affected_users = set(payment.user for payment in queryset)
+        affected_users = set(payment.user for payment in approved_now)
         activated = 0
         for user in affected_users:
             total_approved = user.membershippayment_set.filter(
@@ -82,7 +85,7 @@ class UserQuestionAdmin(admin.ModelAdmin):
 
 @admin.register(ContactSettings)
 class ContactSettingsAdmin(admin.ModelAdmin):
-    list_display = ('email', 'phone', 'website')
+    list_display = ('email', 'phone', 'website','whatsapp_group','instagram')
 
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):

@@ -91,7 +91,9 @@ class UserQuestion(models.Model):
 class ContactSettings(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=20)
-    website = models.URLField()
+    website = models.URLField(null=True, blank=True)
+    instagram = models.URLField(null=True, blank=True)
+    whatsapp_group = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return "JKUSOS Contact Settings"
