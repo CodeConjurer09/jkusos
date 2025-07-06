@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+{% if not user.is_member %}
+  <p>Status: <strong style="color: red;">Inactive</strong></p>
+  {% if user.membershippayment_set.exists %}
+    {% with user.membershippayment_set.last as payment %}
+      <p>Your payment is <strong>{{ 'Approved' if payment.approved else 'Pending Approval' }}</strong>.</p>
+    {% endwith %}
+  {% else %}
+    <p>You have not submitted a membership payment yet.</p>
+  {% endif %}
+{% else %}
+  <p>Status: <strong style="color: green;">Active Member</strong></p>
+{% endif %}
+
+</body>
+</html>

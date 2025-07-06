@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>{{ event.title }}</h2>
+
+    {% if event.banner %}
+    <img
+      src="{{ event.banner.url }}"
+      alt="{{ event.title }}"
+      style="max-width: 100%"
+    />
+    {% endif %}
+
+    <p><strong>Date:</strong> {{ event.date|date:"D, M d, Y - H:i" }}</p>
+    <p><strong>Type:</strong> {{ event.get_type_display }}</p>
+    <p><strong>Location:</strong> {{ event.location }}</p>
+    <p>{{ event.description }}</p>
+
+    {% if event.payment_required %}
+    <p><strong>Fee:</strong> KES {{ event.price }}</p>
+    <a href="#">[Pay and Book Slot]</a>
+    {% elif event.registration_required %}
+    <a href="#">[Register for Event]</a>
+    {% else %}
+    <p>This event does not require registration or payment.</p>
+    {% endif %}
+  </body>
+</html>
