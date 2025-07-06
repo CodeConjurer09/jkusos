@@ -1,6 +1,9 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from cloudinary_storage.storage import MediaCloudinaryStorage
+
+cloudinary_storage_instance = MediaCloudinaryStorage()
 
 EVENT_TYPES = (
     ('trip', 'Academic Trip'),
@@ -16,7 +19,7 @@ class Event(models.Model):
     date = models.DateTimeField()
     type = models.CharField(max_length=20, choices=EVENT_TYPES)
     location = models.CharField(max_length=200, blank=True, null=True)
-    banner = models.ImageField(upload_to='event_banners/', blank=True, null=True)
+    banner = models.ImageField(storage=cloudinary_storage_instance,upload_to='event_banners/', blank=True, null=True)
     registration_required = models.BooleanField(default=False)
     payment_required = models.BooleanField(default=False)
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
