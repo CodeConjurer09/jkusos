@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from .forms import CustomRegisterForm, CustomLoginForm, MembershipPaymentForm
+from .forms import CustomRegisterForm, CustomLoginForm, MembershipPaymentForm, MyPasswordResetForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import MembershipPayment, PaymentSettings, UserQuestion, ContactSettings, ContactMessage
 from events.models import Event
 from django.utils import timezone
 from django.db.models import Sum
+from django.contrib.sites.shortcuts import get_current_site
 
 
 def home_view(request):
@@ -57,9 +58,6 @@ def register_member_view(request):
     else:
         form = MembershipPaymentForm()
     return render(request, 'accounts/register_member.html', {'form': form})
-
-
-
 
 @login_required
 def dashboard_view(request):
@@ -135,3 +133,17 @@ def contact_view(request):
     return render(request, 'contact.html', {
         'contact_info': contact_info
     })
+
+def custom_password_reset_view(request):
+    if request.method == 'POST':
+        form = MyPasswordResetForm(request.POST)
+        if form.is_valid():
+            domain = get_current_site(request).domain
+            form.save(domain=domain, protocol='https')  # You can pass your custom email template too
+            messages.success(request, "A reset link has been sent to your email.")
+            return redirect('password_reset')
+    else:
+        form = MyPasswordResetForm()
+    return render(request, 'accounts/password_reset.html', {'form': form})
+
+

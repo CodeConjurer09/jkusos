@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'jazzmin',
     'cloudinary_storage',
     'cloudinary',
+    'widget_tweaks',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -102,14 +103,24 @@ AUTH_USER_MODEL = 'accounts.User'
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+# SendGrid
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
+
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 # Jazzmin Customization
 JAZZMIN_SETTINGS = {
     "site_title": "JKUSOS-ADMIN",
-    "site_header": "JKUSOS-ADMIN_PANEL",
+    "site_header": "JKUSOS ADMIN",
     "site_brand": "JKUSOS-ADMIN",
-    "welcome_sign": "Welcome to JKUSOS_ADMIN_PANEL",
+    "welcome_sign": "Welcome to JKUSOS ADMIN PANEL",
     "copyright": "JKUSOS",
 
     "show_sidebar": True,
