@@ -1,13 +1,18 @@
 from django.contrib import admin
+import openpyxl
+from io import BytesIO
+from django.http import HttpResponse
 from django.db import models
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, MembershipPayment, PaymentSettings, UserQuestion, ContactSettings, ContactMessage
+from .models import User, MembershipPayment, PaymentSettings, UserQuestion, ContactSettings, ContactMessage, ClubOfficial
+
 
 class UserAdmin(BaseUserAdmin):
-    list_display = ('email', 'first_name', 'last_name', 'reg_number', 'is_member', 'is_staff','is_active')
+    list_display = ('email', 'first_name', 'last_name', 'reg_number', 'is_member', 'is_staff', 'is_active')
     list_filter = ('is_member', 'is_staff', 'is_superuser')
     search_fields = ('email', 'reg_number', 'first_name', 'last_name')
     ordering = ('email',)
+    actions = ['export_to_excel']
 
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
@@ -24,6 +29,34 @@ class UserAdmin(BaseUserAdmin):
         ),
     )
 
+    def export_to_excel(self, request, queryset):
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "JKUSOS Members"
+
+        # Headers
+        ws.append(['First Name', 'Last Name', 'Reg Number', 'Email'])
+
+        # Data rows
+        for user in queryset:
+            ws.append([
+                user.first_name,
+                user.last_name,
+                user.reg_number,
+                user.email,
+            ])
+
+        # Save to BytesIO instead of deprecated save_virtual_workbook
+        output = BytesIO()
+        wb.save(output)
+        output.seek(0)
+
+        response = HttpResponse(
+            output,
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        response['Content-Disposition'] = 'attachment; filename=JKUSOS_members.xlsx'
+        return response
 admin.site.register(User, UserAdmin)
 
 
@@ -91,3 +124,7 @@ class ContactSettingsAdmin(admin.ModelAdmin):
 class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'submitted_at')
     search_fields = ('name', 'email', 'message')
+
+@admin.register(ClubOfficial)
+class ClubOfficialAdmin(admin.ModelAdmin):
+    list_display = ('name', 'position', 'email')

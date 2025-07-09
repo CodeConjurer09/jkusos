@@ -1,0 +1,51 @@
+{% extends "home_base.html" %}
+{% load static %}
+
+{% block title %}Academic Materials - JKUSOS{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/academic_materials.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="shadow-lg bg-white rounded p-5 animate-slide-up">
+      <h2 class="text-center text-purple mb-4"><i class="bi bi-journal-bookmark-fill"></i> Academic Materials</h2>
+      <p class="lead text-center">Access past papers, notes, handouts and more for each academic year.</p>
+
+      <div class="alert alert-success text-center mt-4 shadow-sm animate-fade-in">
+        <i class="bi bi-info-circle-fill"></i> All academic resources are hosted on Google Drive. Click the button below to open the folder.
+      </div>
+
+      <div class="text-center mb-5">
+        <a href="https://drive.google.com/drive/folders/1kzH6J-r5J8WHTZYKNBfE5izE-i9y0Z4S" target="_blank" class="btn btn-outline-primary btn-lg px-5 shadow">
+          <i class="bi bi-cloud-arrow-down-fill"></i> Download
+        </a>
+      </div>
+
+      <div class="row g-4">
+        {% for year in years %}
+        <div class="col-md-6 animate-fade-in">
+          <div class="card border-left-purple shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title"><i class="bi bi-calendar3"></i> {{ year }} </h5>
+              <p class="card-text">Find study resources and course materials relevant to {{ year }} units. This includes lecture notes, past papers, assignments, and revision booklets shared by fellow students and alumni.</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <hr class="my-5">
+
+      <div class="contribute-box text-center animate-slide-up">
+        <h4 class="mb-3 text-danger"><i class="bi bi-share-fill"></i> Help Us Grow the Library</h4>
+        <p class="mb-3">Do you have academic materials that could benefit others? Kindly share them with us so we can upload to the shared Drive folder and make learning easier for everyone.</p>
+        <p class="fw-semibold">Send to: <a href="mailto:jkusos.jkuat@gmail.com" class="text-decoration-underline">jkusos.jkuat@gmail.com</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

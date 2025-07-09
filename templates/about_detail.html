@@ -1,7 +1,7 @@
 {% extends "home_base.html" %}
 {% load static %}
 
-{% block title %}JKUSOS | Home{% endblock %}
+{% block title %}More About JKUSOS{% endblock %}
 
 {% block content %}
 
@@ -23,13 +23,60 @@
         <li>Participation in field trips, conferences, and outreach</li>
       </ul>
 
-      <h4 class="mt-4">Join Us</h4>
+      <h4 class="mt-4">Academic Materials 📘</h4>
+      <p>JKUSOS offers curated academic support including past papers, lecture notes, and course handouts to help you succeed in your studies.</p>
+      <div class="text-center mt-3">
+        <a href="https://drive.google.com/drive/folders/1kzH6J-r5J8WHTZYKNBfE5izE-i9y0Z4S" target="_blank" class="btn btn-outline-primary px-4 py-2 shadow-sm">
+          <i class="bi bi-cloud-arrow-down"></i> Download Academic Materials
+        </a>
+      </div>
+
+      <h4 class="mt-5">Join Us</h4>
       <p>Membership is open to all students, regardless of course. Whether you're pursuing statistics, data science, engineering, or just curious about data — you're welcome to join us.</p>
 
-      <div class="text-center mt-5">
+      <div class="text-center mt-4 mb-5">
         <a href="{% url 'register' %}" class="btn btn-success px-4 py-2">Register Now</a>
       </div>
+
+      <!-- Club Officials Section -->
+      <h4 class="mb-4 text-center">Club Officials 👥</h4>
+      <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+        {% for official in officials %}
+          <div class="col">
+            <div class="card h-100 shadow-sm text-center p-3 animate-slide-up">
+              {% if official.photo %}
+                <img src="{{ official.photo.url }}" class="rounded-circle mx-auto mb-3" style="width: 100px; height: 100px; object-fit: cover;" alt="{{ official.name }}">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{ official.name }}</h5>
+                <p class="card-text text-muted">{{ official.position }}</p>
+                <div class="d-flex justify-content-center gap-2 mt-2">
+                  {% if official.email %}
+                    <a href="mailto:{{ official.email }}" class="btn btn-sm btn-outline-primary" title="Email">
+                      <i class="bi bi-envelope-fill"></i>
+                    </a>
+                  {% endif %}
+                  {% if official.whatsapp %}
+                    <a href="{{ official.whatsapp }}" class="btn btn-sm btn-outline-success" target="_blank" title="WhatsApp">
+                      <i class="bi bi-whatsapp"></i>
+                    </a>
+                  {% endif %}
+                  {% if official.instagram %}
+                    <a href="{{ official.instagram }}" class="btn btn-sm btn-outline-danger" target="_blank" title="Instagram">
+                      <i class="bi bi-instagram"></i>
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <p class="text-center">Club officials will be updated soon.</p>
+        {% endfor %}
+      </div>
+
     </div>
   </div>
 </section>
+
 {% endblock %}

@@ -34,7 +34,7 @@
 
       <!-- Slide 3 -->
       <div class="carousel-item">
-        <img src="{% static 'images/image3.JPG' %}" class="d-block w-100 hero-img" alt="Slide 3">
+        <img src="{% static 'images/jkusos-image1.jpg' %}" class="d-block w-100 hero-img" alt="Slide 3">
         <div class="carousel-caption">
           <div>
             <h2>Community Outreach</h2>
@@ -55,32 +55,39 @@
   </div>
 </section>
 
-<!-- About Section -->
 <section id="about" class="about-section pt-3 pb-4">
-  <div class="container d-flex justify-content-center">
-    <div class="about-card shadow-lg p-5 bg-white rounded animate-slide-up">
-      <h2 class="text-center mb-4">About JKUSOS – JKUAT Statistical Club</h2>
-      <p class="text-center">
-        Welcome to <strong>JKUSOS</strong> – the official Statistical Club of JKUAT!
-      </p>
-      <p>
-        We are a dynamic and vibrant community of students passionate about data, analytics, and the power of statistics to shape the world. Our mission is to bridge the gap between classroom learning and real-world application through academic trips, hands-on workshops, research projects, and networking opportunities.
-      </p>
-      <ul>
-        <li>Enhance statistical knowledge and practical skills</li>
-        <li>Connect students with industry professionals</li>
-        <li>Promote research, innovation, and teamwork</li>
-        <li>Organize engaging events that are both educational and fun</li>
-      </ul>
-      <p>
-        Whether you're a statistics major or simply curious about data, <strong>JKUSOS</strong> is the place to grow, connect, and thrive. Join us as we turn numbers into knowledge and ideas into action!
-      </p>
-      <div class="text-center mt-4">
-        <a href="{% url 'read_more' %}" class="btn btn-primary px-4 py-2 shadow">Read More</a>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="about-card shadow-lg p-4 bg-white rounded animate-slide-up">
+          <h2 class="text-center mb-4">About JKUSOS – JKUAT Statistical Club</h2>
+          <p class="text-center">
+            Welcome to <strong>JKUSOS</strong> – the official Statistical Club of JKUAT!
+          </p>
+          <p>
+            We are a dynamic and vibrant community of students passionate about data, analytics, and the power of statistics to shape the world. Our mission is to bridge the gap between classroom learning and real-world application through academic trips, hands-on workshops, research projects, and networking opportunities.
+          </p>
+          <ul>
+            <li>Enhance statistical knowledge and practical skills</li>
+            <li>Connect students with industry professionals</li>
+            <li>Promote research, innovation, and teamwork</li>
+            <li>Organize engaging events that are both educational and fun</li>
+          </ul>
+          <p>
+            Whether you're a statistics major or simply curious about data, <strong>JKUSOS</strong> is the place to grow, connect, and thrive. Join us as we turn numbers into knowledge and ideas into action!
+          </p>
+          <div class="text-center mt-4">
+            <img src="{% static 'images/jkusos-cert.jpg' %}" alt="JKUSOS Certificate" class="img-fluid shadow rounded" style="max-width: 100%; height: auto;">
+          </div>
+          <div class="text-center mt-3">
+            <a href="{% url 'read_more' %}" class="btn btn-primary px-4 py-2 shadow">Read More</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
 
 <!-- Mission, Vision, Values Section -->
 <section class="mv-section py-5">

@@ -106,3 +106,15 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.email}) - {self.submitted_at:%Y-%m-%d}"
+
+class ClubOfficial(models.Model):
+    name = models.CharField(max_length=100)
+    position = models.CharField(max_length=100)
+    email = models.EmailField(blank=True, null=True)
+    whatsapp = models.URLField(blank=True, null=True, help_text="Paste full WhatsApp link e.g. https://wa.me/2547XXXXXXX")
+    instagram = models.URLField(blank=True, null=True, help_text="Paste Instagram profile link")
+    photo = models.ImageField(upload_to='officials_photos/', blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.position}"
+

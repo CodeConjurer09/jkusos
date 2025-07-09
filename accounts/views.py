@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from .forms import CustomRegisterForm, CustomLoginForm, MembershipPaymentForm, MyPasswordResetForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import MembershipPayment, PaymentSettings, UserQuestion, ContactSettings, ContactMessage
+from .models import MembershipPayment, PaymentSettings, UserQuestion, ContactSettings, ContactMessage, ClubOfficial
 from events.models import Event
 from django.utils import timezone
 from django.db.models import Sum
@@ -12,8 +12,9 @@ from django.contrib.sites.shortcuts import get_current_site
 
 def home_view(request):
     return render(request, 'homepage.html')
-def read_more(request):
-    return render(request, 'about_detail.html')
+def about_details(request):
+    officials = ClubOfficial.objects.all()
+    return render(request, 'about_detail.html', {'officials': officials})
 
 def register_view(request):
     if request.method == 'POST':
@@ -146,4 +147,6 @@ def custom_password_reset_view(request):
         form = MyPasswordResetForm()
     return render(request, 'accounts/password_reset.html', {'form': form})
 
-
+def academic_materials(request):
+    years = ["Year 1", "Year 2", "Year 3", "Year 4"]
+    return render(request, 'accounts/academic_materials.html', {'years': years})
